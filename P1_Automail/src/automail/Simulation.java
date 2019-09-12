@@ -125,11 +125,15 @@ public class Simulation {
             Clock.Tick();
         }
         printResults();
-        for (int i=0; i<robots; i++) {
-    		System.out.println("---------------------------");
-    		System.out.println("<Statistics for robot " + i + ">");
-			automail.odRobots[i].printStatistics();
-		}
+        
+        if (Boolean.parseBoolean(automailProperties.getProperty("Statistics")) == true) {
+        	for (int i=0; i<robots; i++) {
+        		System.out.println("---------------------------");
+        		System.out.println("<Statistics for robot " + i + ">");
+    			automail.odRobots[i].printStatistics();
+    		}
+            System.out.println("---------------------------");
+        }     
     }
     
     static class ReportDelivery implements IMailDelivery {

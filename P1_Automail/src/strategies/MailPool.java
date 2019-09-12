@@ -28,6 +28,14 @@ public class MailPool implements IMailPool {
 			destination = mailItem.getDestFloor();
 			this.mailItem = mailItem;
 		}
+		
+		 private Boolean checkHiPriority() {
+			 if (priority > 50) {
+				 return true;
+			 }else {
+				 return false;
+			 }
+		 }
 	}
 	
 	public class ItemComparator implements Comparator<Item> {
@@ -112,14 +120,14 @@ public class MailPool implements IMailPool {
 			try {
 			temp = j.next();
 			odRobot.addToHand(temp.mailItem); // hand first as we want higher priority delivered first
-			if (temp.priority > 50) { // overdrive if item priority > 50
+			if (temp.checkHiPriority()) { // overdrive if item priority > 50
 				odRobot.setOverdrive(true);
 				// this.overdriveCount++;
 			}
 			j.remove();
 			if ((pool.size() > 0)  && (odRobot.getOverdrive() == false)){
 				temp = j.next();
-				while (temp.priority > 50) { // Priority item cannot be put into tube
+				while (temp.checkHiPriority()) { // Priority item cannot be put into tube
 					temp = j.next();
 				} 
 				odRobot.addToTube(temp.mailItem);
